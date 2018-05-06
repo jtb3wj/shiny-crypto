@@ -86,19 +86,23 @@ ui <- fluidPage(
       ,
       selectInput("cryptoSelection",
                    "Select Crypto Currency: ",
-                   c("Ripple" = "ripple",
+                   c("Bitcoin" = "bitcoin",
+                     "Bitcoin Cash" = "bitcoin-cash",
+                     "Cardano" = "cardano",
+                     "Dogecoin" = "dogecoin",
+                     "Ethereum" = "ethereum",
+                     "Golem" = "golem-network-tokens",
                      "Iota" = "iota",
-                    "Ethereum" = "ethereum",
-                    "Bitcoin" = "bitcoin",
-                    "Golem" = "golem-network-tokens",
-                    "Litecoin" = "litecoin",
-                    "Bitcoin Cash" = "bitcoin-cash",
-                    "Stellar" = "stellar",
-                    "Cardano" = "cardano"))),
+                     "Litecoin" = "litecoin",
+                     "Monero" = "monero",
+                     "Qtum" = "qtum",
+                     "Ripple" = "ripple",
+                     "Stellar" = "stellar",
+                     "Verge" = "verge"))),
       
       # Show a plot of the generated distribution
       mainPanel(
-        plotOutput("distPlot")
+        plotOutput("distPlot", height = "800px")
       )
    )
 )
@@ -144,7 +148,7 @@ server <- function(input, output) {
      
      
      ggplot(myTable, aes(Date)) +
-       scale_x_date(date_labels = "%m-%d-%y", date_breaks = "1 weeks") +
+       scale_x_date(date_labels = "%m-%d-%y") +
        geom_line(aes(y = Open, colour = "Open")) +
        geom_line(aes(y = High, colour = "High")) +
        geom_line(aes(y = Low, colour = "Low")) +
@@ -156,7 +160,8 @@ server <- function(input, output) {
        geom_text(aes(y = Open, 
                      label = sprintf("$%01.2f", Open)),
                  check_overlap = TRUE,
-                 fontface = "bold")
+                 fontface = "bold",
+                 size = 3)
      
   
      
