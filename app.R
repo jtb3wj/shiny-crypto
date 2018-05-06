@@ -51,7 +51,26 @@ if(require(ggvis)){
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
-   
+  tags$head(
+    tags$style(HTML("
+      
+      body {
+        background-color:#202020;
+      }
+
+      h2 {
+        color:#FFFFFF;
+      }
+
+      .shiny-plot-output shiny-bound-output{
+        background-color:#202020;
+      }
+
+      img {
+      border-radius: 25px;
+      }
+    "))
+  ),
    # Application title
    titlePanel("Find your crypto price!"),
    
@@ -91,20 +110,7 @@ server <- function(input, output) {
   
   
    output$distPlot <- renderPlot({
-     # Make first chart with Open, Low, and High
-     # figure() %>%
-     #   ly_points(seq(min(myTable$Date),
-     #                 max(myTable$Date), by="week"), Open, data = myTable, hover = c(`Date`,`Open Price`, `High Price`, `Low Price`, `Close Price`)) %>%
-     #   ly_lines(seq(min(myTable$Date),
-     #                max(myTable$Date), by="week"), High, data = myTable, color = "green") %>% 
-     #   ly_lines(seq(min(myTable$Date),
-     #                max(myTable$Date), by="week"), Low, data = myTable, color = "red") %>%
-     #   ly_lines(seq(min(myTable$Date),
-     #                max(myTable$Date), by="week"), Open, data = myTable, color = "blue") %>% 
-     #   x_axis(label = "Date", format = list(months = "%b")) %>% 
-     #   y_axis(label = "Price", number_formatter = "printf", format = "$%0.2f") %>% 
-     #   tool_lasso_select()
-     
+
      # Need to convert dates from shiny input 
      start.date <- 
        input$myDateRange[1] %>%
@@ -144,7 +150,7 @@ server <- function(input, output) {
        geom_line(aes(y = High, colour = "High")) +
        geom_line(aes(y = Low, colour = "Low")) +
        geom_line(aes(y = Close, colour = "Close")) +
-       labs(x = "Date", y = "USD Equivalent", title = input$cryptoSelection) +
+       labs(x = "Date", y = "USD Equivalent $", title = input$cryptoSelection) +
        theme_dark()
 
      
@@ -154,10 +160,7 @@ server <- function(input, output) {
 }
 input_size <- reactive(input$size)
 
-# mtcars %>% 
-#   ggvis(~disp, ~mpg, size := input_size) %>%
-#   layer_points() %>%
-#   bind_shiny("ggvis", "ggvis_ui")
+
 # Run the application 
 shinyApp(ui = ui, server = server)
 
