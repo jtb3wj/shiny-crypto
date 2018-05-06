@@ -34,7 +34,7 @@ if(require(lubridate)){
   library(lubridate)
 }
 
-
+# Make sure that the shiny package is installed
 if(require(shiny)){
   print("Nice job: shiny is installed!")
 }else{
@@ -42,14 +42,15 @@ if(require(shiny)){
   library(shiny)
 }
 
-if(require(ggvis)){
-  print("Nice job: ggvis is installed!")
+if(require(ggthemes)){
+  print("Nice job: ggthemes is installed!")
 }else{
-  install.packages("ggvis")
-  library(ggvis)
+  install.packages("ggthemes")
+  library(ggthemes)
 }
 
-# Define UI for application that draws a histogram
+
+# Define UI for application that draws a histogram; adding in some more css styling
 ui <- fluidPage(
   tags$head(
     tags$style(HTML("
@@ -61,14 +62,11 @@ ui <- fluidPage(
       h2 {
         color:#FFFFFF;
       }
-
-      .shiny-plot-output shiny-bound-output{
-        background-color:#202020;
-      }
-
+      
       img {
-      border-radius: 25px;
+        border-radius: 25px;
       }
+
     "))
   ),
    # Application title
@@ -146,18 +144,27 @@ server <- function(input, output) {
      
      
      ggplot(myTable, aes(Date)) +
+       scale_x_date(date_labels = "%m-%d-%y", date_breaks = "1 weeks") +
        geom_line(aes(y = Open, colour = "Open")) +
        geom_line(aes(y = High, colour = "High")) +
        geom_line(aes(y = Low, colour = "Low")) +
        geom_line(aes(y = Close, colour = "Close")) +
-       labs(x = "Date", y = "USD Equivalent $", title = input$cryptoSelection) +
-       theme_dark()
-
+       geom_point(aes(y = Open, colour = "Open")) +
+       labs(x = "Date", y = "USD Equivalent $", title = str_to_title(str_replace_all(input$cryptoSelection, "[:punct:]", " "))) +
+       theme_economist() +
+       scale_color_economist() +
+       geom_text(aes(y = Open, 
+                     label = sprintf("$%01.2f", Open)),
+                 check_overlap = TRUE,
+                 fontface = "bold")
      
-     # mtcars %>% ggvis::ggvis(~mpg, ~wt, ,fill := "red") %>% 
-     # bind_shiny("ggvis", "ggvis_ui")
+  
+     
+
    })
 }
+
+
 input_size <- reactive(input$size)
 
 
