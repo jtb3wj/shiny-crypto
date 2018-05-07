@@ -10,13 +10,6 @@ if(require(tidyverse)){
   library(tidyverse)
 }
 
-# Make sure that the rbokeh package is installed
-if(require(rbokeh)){
-  print("Nice job: rbokeh is installed!")
-}else{
-  install.packages("rbokeh")
-  library(rbokeh)
-}
 
 # Make sure that the rvest package is installed
 if(require(rvest)){
@@ -158,7 +151,7 @@ server <- function(input, output) {
        theme_economist() +
        scale_color_economist() +
        geom_text(aes(y = Open, 
-                     label = sprintf("$%01.2f", Open)),
+                     label = sprintf("$%01.4f", Open)),
                  check_overlap = TRUE,
                  fontface = "bold",
                  size = 3)
