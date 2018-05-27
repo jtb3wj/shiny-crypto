@@ -75,7 +75,7 @@ ui <- fluidPage(
                      min = ymd("2012-01-01"),  # 2012-10-03~close to when bitcoin became a big thing
                      max = Sys.Date(),
                      format = "mm/dd/yyyy",
-                     separator = "-")
+                     separator = "")
       ,
       selectInput("cryptoSelection",
                    "Select Crypto Currency: ",
@@ -123,11 +123,12 @@ server <- function(input, output) {
      
      # Here we are scraping coinmarketcap.com for the prices of the ripple cryptocurrency starting at the
      # 'start.date' and ending at 'today.date'
-     myTable <- {
+     myTable <- 
        paste0("https://coinmarketcap.com/currencies/", input$cryptoSelection ,"/historical-data/?start=", start.date, "&end=" , end.date) %>%
          read_html() %>%
          html_nodes("table") %>%
-         html_table()}[[1]] %>%
+         html_table() %>% 
+          .[[1]] %>%
        as.tibble()
      # 
      # # Convert Character Date from the Coin Market Cap website to date values for our charts 
@@ -138,23 +139,23 @@ server <- function(input, output) {
      # # Clean up Prices so that we have dollar amounts along with cents
      myTable <-
        myTable %>%
-       mutate(`Open Price` = sprintf("$%0.2f", Open), `High Price` = sprintf("$%0.2f", High),
-              `Low Price` = sprintf("$%0.2f", Low), `Close Price` = sprintf("$%0.2f", Close))
+       mutate(`Open Price` = sprintf("$%0.2f", `Open*`), `High Price` = sprintf("$%0.2f", High),
+              `Low Price` = sprintf("$%0.2f", Low), `Close Price` = sprintf("$%0.2f", `Close**`))
      
      
      
      ggplot(myTable, aes(Date)) +
        scale_x_date(date_labels = "%m-%d-%y") +
-       geom_line(aes(y = Open, colour = "Open")) +
+       geom_line(aes(y = `Open*`, colour = "`Open*`")) +
        geom_line(aes(y = High, colour = "High")) +
        geom_line(aes(y = Low, colour = "Low")) +
-       geom_line(aes(y = Close, colour = "Close")) +
-       geom_point(aes(y = Open, colour = "Open")) +
+       geom_line(aes(y = `Close**`, colour = "Close")) +
+       geom_point(aes(y = `Open*`, colour = "`Open*`")) +
        labs(x = "Date", y = "USD Equivalent $", title = str_to_title(str_replace_all(input$cryptoSelection, "[:punct:]", " "))) +
        theme_economist() +
        scale_color_economist() +
-       geom_text(aes(y = Open, 
-                     label = sprintf("$%01.4f", Open)),
+       geom_text(aes(y = `Open*`, 
+                     label = sprintf("$%01.4f", `Open*`)),
                  check_overlap = TRUE,
                  fontface = "bold",
                  size = 3)
