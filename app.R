@@ -150,7 +150,7 @@ server <- function(input, output) {
        geom_line(aes(y = High, colour = "High")) +
        geom_line(aes(y = Low, colour = "Low")) +
        geom_line(aes(y = `Close**`, colour = "Close")) +
-       geom_point(aes(y = `Open*`, colour = "`Open*`")) +
+       geom_point(aes(y = `Open*`, colour = "Open")) +
        labs(x = "Date", y = "USD Equivalent $", title = str_to_title(str_replace_all(input$cryptoSelection, "[:punct:]", " "))) +
        theme_economist() +
        scale_color_economist() +
