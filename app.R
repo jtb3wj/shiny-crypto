@@ -35,6 +35,7 @@ if(require(shiny)){
   library(shiny)
 }
 
+# Make sure that ggthemes is installed
 if(require(ggthemes)){
   print("Nice job: ggthemes is installed!")
 }else{
@@ -42,6 +43,25 @@ if(require(ggthemes)){
   library(ggthemes)
 }
 
+# Make sure that jsonlite is installed
+if(require(jsonlite)){
+  print("Nice job: jsonlite is installed!")
+}else{
+  install.packages("jsonlite")
+  library(jsonlite)
+}
+
+
+coin.listing <- 
+  "https://api.coinmarketcap.com/v2/listings/" %>% 
+  parse_url() %>% 
+  build_url() %>% 
+  fromJSON(flatten = TRUE) %>% 
+  .[[1]] %>% 
+  arrange(name)
+
+coin.listing.input <- coin.listing$name
+names(coin.listing.input) <- coin.listing$website_slug
 
 # Define UI for application that draws a histogram; adding in some more css styling
 ui <- fluidPage(
@@ -79,22 +99,7 @@ ui <- fluidPage(
       ,
       selectInput("cryptoSelection",
                    "Select Crypto Currency: ",
-                   c("Basic Attention Token" = "basic-attention-token",
-                     "Bitcoin" = "bitcoin",
-                     "Bitcoin Cash" = "bitcoin-cash",
-                     "Cardano" = "cardano",
-                     "Dogecoin" = "dogecoin",
-                     "Ethereum" = "ethereum",
-                     "Golem" = "golem-network-tokens",
-                     "Komodo" = "komodo",
-                     "Iota" = "iota",
-                     "Litecoin" = "litecoin",
-                     "Monero" = "monero",
-                     "Omisego" = "omisego",
-                     "Qtum" = "qtum",
-                     "Ripple" = "ripple",
-                     "Stellar" = "stellar",
-                     "Verge" = "verge"))),
+                  coin.listing.input)),
       
       # Show a plot of the generated distribution
       mainPanel(
