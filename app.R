@@ -51,6 +51,13 @@ if(require(jsonlite)){
   library(jsonlite)
 }
 
+# Make sure the httr is installed
+if(require(httr)){
+  print("Nice job: httr is installed!")
+}else{
+  install.packages("httr")
+  library()
+}
 
 coin.listing <- 
   "https://api.coinmarketcap.com/v2/listings/" %>% 
