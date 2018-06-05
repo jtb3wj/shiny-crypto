@@ -60,8 +60,8 @@ coin.listing <-
   .[[1]] %>% 
   arrange(name)
 
-coin.listing.input <- coin.listing$name
-names(coin.listing.input) <- coin.listing$website_slug
+coin.listing.input <- coin.listing$website_slug
+names(coin.listing.input) <- coin.listing$name
 
 # Define UI for application that draws a histogram; adding in some more css styling
 ui <- fluidPage(
