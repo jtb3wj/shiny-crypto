@@ -56,7 +56,7 @@ if(require(httr)){
   print("Nice job: httr is installed!")
 }else{
   install.packages("httr")
-  library()
+  library(httr)
 }
 
 coin.listing <- 
