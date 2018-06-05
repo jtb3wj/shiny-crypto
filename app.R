@@ -151,7 +151,7 @@ server <- function(input, output) {
      
      ggplot(myTable, aes(Date)) +
        scale_x_date(date_labels = "%m-%d-%y") +
-       geom_line(aes(y = `Open*`, colour = "`Open*`")) +
+       geom_line(aes(y = `Open*`, colour = "Open")) +
        geom_line(aes(y = High, colour = "High")) +
        geom_line(aes(y = Low, colour = "Low")) +
        geom_line(aes(y = `Close**`, colour = "Close")) +
