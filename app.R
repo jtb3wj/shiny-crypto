@@ -1,63 +1,17 @@
 # Author: Jacob Bailey
 
+# get whether or not we have certain packages
+package.list <- list("tidyverse", "rvest", "lubridate",
+                  "shiny", "ggthemes", "jsonlite",
+                  "httr")
 
+# see if the packages are installed
+is.installed <- sapply(package.list, require, character.only = TRUE)
 
-# Make sure that the tidyverse package is installed
-if(require(tidyverse)){
-  print("Nice job: tidyverse is installed!")
-}else{
-  install.packages("tidyverse")
-  library(tidyverse)
-}
+# install and load and ones that aren't
+sapply(package.list[!is.installed], install.packages, character.only = TRUE)
+sapply(package.list[!is.installed], library, character.only = TRUE)
 
-
-# Make sure that the rvest package is installed
-if(require(rvest)){
-  print("Nice job: rvest is installed!")
-}else{
-  install.packages("rvest")
-  library(rvest)
-}
-
-# Make sure that lubridate package is installed
-if(require(lubridate)){
-  print("Nice job: lubridate is installed!")
-}else{
-  install.packages("lubridate")
-  library(lubridate)
-}
-
-# Make sure that the shiny package is installed
-if(require(shiny)){
-  print("Nice job: shiny is installed!")
-}else{
-  install.packages("shiny")
-  library(shiny)
-}
-
-# Make sure that ggthemes is installed
-if(require(ggthemes)){
-  print("Nice job: ggthemes is installed!")
-}else{
-  install.packages("ggthemes")
-  library(ggthemes)
-}
-
-# Make sure that jsonlite is installed
-if(require(jsonlite)){
-  print("Nice job: jsonlite is installed!")
-}else{
-  install.packages("jsonlite")
-  library(jsonlite)
-}
-
-# Make sure the httr is installed
-if(require(httr)){
-  print("Nice job: httr is installed!")
-}else{
-  install.packages("httr")
-  library(httr)
-}
 
 coin.listing <- 
   "https://api.coinmarketcap.com/v2/listings/" %>% 
